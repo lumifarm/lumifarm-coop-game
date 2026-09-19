@@ -38,6 +38,18 @@
     glossaryBody.innerHTML = window.UI.glossaryHTML(state.unlocked);
   }
 
+  function openGlossaryEntry(id) {
+    renderGlossary();
+    glossaryOverlay.hidden = false;
+    requestAnimationFrame(() => {
+      const el = document.getElementById(`glossary-entry-${id}`);
+      if (!el) return;
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.classList.add("glossary-entry--highlight");
+      setTimeout(() => el.classList.remove("glossary-entry--highlight"), 1600);
+    });
+  }
+
   function render() {
     renderMetrics();
     const act = window.GameEngine.currentAct(state);
@@ -58,11 +70,11 @@
   }
 
   function showFeedback(feedback, unlockIds, onContinue, deltas) {
-    const titles = (unlockIds || [])
+    const entries = (unlockIds || [])
       .filter((id) => window.GLOSSARY[id])
-      .map((id) => window.GLOSSARY[id].title);
+      .map((id) => ({ id, title: window.GLOSSARY[id].title }));
     renderMetrics(deltas);
-    stage.innerHTML = window.UI.feedbackHTML(feedback, titles);
+    stage.innerHTML = window.UI.feedbackHTML(feedback, entries);
     pendingContinue = onContinue;
   }
 
@@ -205,6 +217,8 @@
       handleChoice(option);
     } else if (action === "open-feedback") {
       openFeedback();
+    } else if (action === "open-glossary-entry") {
+      openGlossaryEntry(btn.dataset.id);
     }
   });
 

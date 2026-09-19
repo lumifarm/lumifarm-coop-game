@@ -21,7 +21,9 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='none' stroke='%23ddd0ac' stroke-width='1.6' stroke-linecap='round' opacity='0.6'%3E%3Cpath d='M40 120 L40 90'/%3E%3Cpath d='M40 94 C34 92 32 96 34 100'/%3E%3Cpath d='M40 94 C46 92 48 96 46 100'/%3E%3Cpath d='M40 101 C34 99 32 103 34 107'/%3E%3Cpath d='M40 101 C46 99 48 103 46 107'/%3E%3Cpath d='M100 50 L100 20'/%3E%3Cpath d='M100 24 C94 22 92 26 94 30'/%3E%3Cpath d='M100 24 C106 22 108 26 106 30'/%3E%3Cpath d='M100 31 C94 29 92 33 94 37'/%3E%3Cpath d='M100 31 C106 29 108 33 106 37'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
   color: var(--color-ink);
   font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", "Segoe UI", sans-serif;
   line-height: 1.7;
@@ -42,8 +44,20 @@ body {
   flex-wrap: wrap;
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+}
+
 .topbar h1 {
-  font-size: 1.4rem;
+  font-size: 1.3rem;
   margin: 0;
   color: var(--color-primary-dark);
   display: flex;
@@ -52,7 +66,7 @@ body {
 }
 
 .subtitle {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   font-weight: 400;
   color: var(--color-ink-soft);
 }
@@ -321,6 +335,23 @@ body {
   color: var(--color-ink-soft);
 }
 
+.unlock-link {
+  display: inline;
+  border: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--color-accent);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.unlock-link:hover {
+  color: var(--color-primary-dark);
+}
+
 .card--ending h2 {
   color: var(--color-accent);
 }
@@ -406,8 +437,35 @@ body {
   font-size: 0.92rem;
 }
 
+.glossary-source {
+  margin-top: 6px !important;
+  font-size: 0.76rem !important;
+  color: var(--color-ink-soft);
+  opacity: 0.75;
+}
+
+.glossary-entry--highlight {
+  animation: glossaryHighlight 1.6s ease-out;
+  border-radius: 8px;
+}
+
+@keyframes glossaryHighlight {
+  0% {
+    background: #f6efe0;
+  }
+  100% {
+    background: transparent;
+  }
+}
+
 .glossary-empty {
   color: var(--color-ink-soft);
+}
+
+.card-icon {
+  font-size: 2.2rem;
+  line-height: 1;
+  margin-bottom: 8px;
 }
 
 .tutorial-skip {

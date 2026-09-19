@@ -42,7 +42,8 @@
     return `<div class="progress">${acts
       .map((act, i) => {
         const cls = i < state.actIndex ? "done" : i === state.actIndex ? "current" : "";
-        return `<span class="progress-step ${cls}">${escapeHtml(act.title)}</span>`;
+        const icon = act.icon ? `${act.icon} ` : "";
+        return `<span class="progress-step ${cls}">${icon}${escapeHtml(act.title)}</span>`;
       })
       .join('<span class="progress-sep">→</span>')}</div>`;
   }
@@ -50,6 +51,7 @@
   function introHTML(act) {
     return `
       <section class="card card--intro">
+        <div class="card-icon">${act.icon || ""}</div>
         <h2>${escapeHtml(act.title)}</h2>
         <p>${escapeHtml(act.intro)}</p>
         <button class="btn btn--primary" data-action="continue">開始這個階段</button>
@@ -59,6 +61,7 @@
   function outroHTML(act) {
     return `
       <section class="card card--outro">
+        <div class="card-icon">${act.icon || ""}</div>
         <h2>${escapeHtml(act.title)}・階段小結</h2>
         <p>${escapeHtml(act.outro)}</p>
         <button class="btn btn--primary" data-action="continue">繼續</button>
@@ -93,9 +96,16 @@
       </section>`;
   }
 
-  function feedbackHTML(feedback, unlockedTitles) {
-    const unlockHTML = unlockedTitles.length
-      ? `<div class="unlock-note">📖 解鎖百科：${unlockedTitles.map(escapeHtml).join("、")}</div>`
+  function feedbackHTML(feedback, unlockedEntries) {
+    const unlockHTML = unlockedEntries.length
+      ? `<div class="unlock-note">📖 解鎖百科：${unlockedEntries
+          .map(
+            (e) =>
+              `<button type="button" class="unlock-link" data-action="open-glossary-entry" data-id="${e.id}">${escapeHtml(
+                e.title
+              )}</button>`
+          )
+          .join("、")}</div>`
       : "";
     return `
       <section class="card card--feedback">
@@ -108,6 +118,7 @@
   function endingHTML(ending, state, unlockedCount) {
     return `
       <section class="card card--ending card--ending-${ending.type}">
+        <div class="card-icon">${ending.icon || ""}</div>
         <h2>${escapeHtml(ending.title)}</h2>
         <p>${escapeHtml(ending.text)}</p>
         <div class="ending-metrics">${metricsBarHTML(state)}</div>
@@ -165,7 +176,9 @@
       .filter((id) => unlockedSet.has(id))
       .map((id) => {
         const e = entries[id];
-        return `<div class="glossary-entry"><h4>${escapeHtml(e.title)}</h4><p>${escapeHtml(e.text)}</p></div>`;
+        return `<div class="glossary-entry" id="glossary-entry-${id}"><h4>${escapeHtml(e.title)}</h4><p>${escapeHtml(
+          e.text
+        )}</p><p class="glossary-source">資料來源：${escapeHtml(e.source)}</p></div>`;
       })
       .join("");
   }
