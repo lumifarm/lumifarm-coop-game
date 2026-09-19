@@ -69,30 +69,14 @@
       </section>`;
   }
 
-  function effectChipsHTML(effects) {
-    const keys = window.GameEngine.METRIC_KEYS;
-    const shortLabels = window.GameEngine.METRIC_SHORT_LABELS;
-    return keys
-      .filter((key) => effects[key])
-      .map((key) => {
-        const value = effects[key];
-        const cls = value > 0 ? "effect-chip--up" : "effect-chip--down";
-        const sign = value > 0 ? "+" : "";
-        return `<span class="effect-chip ${cls}">${shortLabels[key]}${sign}${value}</span>`;
-      })
-      .join("");
-  }
-
+  // 選項按鈕故意不顯示指標增減——結果只在按下之後才揭曉，避免玩家為了衝數值而選擇，
+  // 而是真的憑情境判斷做決定。
   function optionsHTML(options) {
     return options
-      .map((opt, i) => {
-        const preview = window.GameEngine.previewEffects(opt.effects);
-        return `
-          <button class="btn btn--option" data-action="choose" data-index="${i}">
-            <span class="option-label">${escapeHtml(opt.label)}</span>
-            <span class="option-effects">${effectChipsHTML(preview)}</span>
-          </button>`;
-      })
+      .map(
+        (opt, i) =>
+          `<button class="btn btn--option" data-action="choose" data-index="${i}">${escapeHtml(opt.label)}</button>`
+      )
       .join("");
   }
 
@@ -141,13 +125,43 @@
         <h2>${escapeHtml(ending.title)}</h2>
         ${routeLabel ? `<p class="ending-route">本局路線：${escapeHtml(routeLabel)}</p>` : ""}
         <p>${escapeHtml(ending.text)}</p>
+        ${
+          ending.advice
+            ? `<div class="ending-advice">🔄 <strong>如何走向更好的結局：</strong>${escapeHtml(ending.advice)}</div>`
+            : ""
+        }
+        ${
+          ending.realWorld
+            ? `<div class="ending-realworld">🌍 <strong>現實案例對照：</strong>${escapeHtml(ending.realWorld)}</div>`
+            : ""
+        }
         <div class="ending-metrics">${metricsBarHTML(state)}</div>
         <p class="ending-note">本局共解鎖 ${unlockedCount} 則合作社小百科條目。</p>
         <div class="ending-actions">
           <button class="btn btn--primary" data-action="restart">重新開始</button>
+          <button class="btn btn--ghost" data-action="open-achievements">🏆 查看所有結局</button>
           <button class="btn btn--ghost" data-action="open-feedback">💬 留下你的回饋</button>
         </div>
       </section>`;
+  }
+
+  function achievementsHTML(achievedSet) {
+    const endings = window.GameEngine.getAllEndings();
+    return endings
+      .map((e) => {
+        const achieved = achievedSet.has(e.type);
+        return `
+          <div class="achievement-entry ${achieved ? "achievement-entry--done" : ""}">
+            <div class="achievement-head">
+              <span class="achievement-icon">${e.icon}</span>
+              <h4>${escapeHtml(e.title)}</h4>
+              <span class="achievement-status">${achieved ? "✓ 已達成" : "尚未達成"}</span>
+            </div>
+            <p>${escapeHtml(e.text)}</p>
+            <p class="achievement-realworld">🌍 ${escapeHtml(e.realWorld)}</p>
+          </div>`;
+      })
+      .join("");
   }
 
   function tutorialHTML(tutorial) {
@@ -212,6 +226,7 @@
     quizHTML,
     feedbackHTML,
     endingHTML,
+    achievementsHTML,
     glossaryHTML,
     tutorialHTML,
     feedbackFormHTML,

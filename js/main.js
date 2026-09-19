@@ -3,6 +3,7 @@
   const REPO_URL = "https://github.com/lumifarm/lumifarm-coop-game";
   const FEEDBACK_EMAIL = "info@lumifarm.org";
   const TUTORIAL_SKIP_KEY = "lumifarm_coop_game_skip_tutorial";
+  const ACHIEVEMENTS_KEY = "lumifarm_coop_game_achievements";
 
   const stage = document.getElementById("stage");
   const metricsBar = document.getElementById("metrics-bar");
@@ -22,6 +23,11 @@
   const feedbackOverlay = document.getElementById("feedback-overlay");
   const feedbackBody = document.getElementById("feedback-body");
   const feedbackClose = document.getElementById("feedback-close");
+
+  const achievementsBtn = document.getElementById("achievements-btn");
+  const achievementsOverlay = document.getElementById("achievements-overlay");
+  const achievementsBody = document.getElementById("achievements-body");
+  const achievementsClose = document.getElementById("achievements-close");
 
   let state = window.GameEngine.createInitialState();
   // 顯示回饋卡片時，「繼續」按鈕該做的事（推進到下一階段，或結束遊戲）。
@@ -70,6 +76,7 @@
         state.unlocked.size,
         window.GameEngine.ROUTE_LABELS[window.GameEngine.computeRoute(state)]
       );
+      recordAchievement(state.ending.type);
     }
     renderGlossary();
   }
@@ -162,6 +169,36 @@
     tutorialOverlay.hidden = true;
   }
 
+  // ---- 成就（所有可能的結局） ----
+
+  function readAchievements() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(ACHIEVEMENTS_KEY) || "[]");
+      return new Set(Array.isArray(raw) ? raw : []);
+    } catch (e) {
+      return new Set();
+    }
+  }
+
+  function recordAchievement(type) {
+    try {
+      const set = readAchievements();
+      set.add(type);
+      localStorage.setItem(ACHIEVEMENTS_KEY, JSON.stringify(Array.from(set)));
+    } catch (e) {
+      // 私密瀏覽或封鎖儲存時，安靜地放棄記錄即可，不影響本局遊玩。
+    }
+  }
+
+  function openAchievements() {
+    achievementsBody.innerHTML = window.UI.achievementsHTML(readAchievements());
+    achievementsOverlay.hidden = false;
+  }
+
+  function closeAchievements() {
+    achievementsOverlay.hidden = true;
+  }
+
   // ---- 意見回饋 ----
 
   function openFeedback() {
@@ -223,6 +260,8 @@
       handleChoice(option);
     } else if (action === "open-feedback") {
       openFeedback();
+    } else if (action === "open-achievements") {
+      openAchievements();
     } else if (action === "open-glossary-entry") {
       openGlossaryEntry(btn.dataset.id);
     }
@@ -250,6 +289,12 @@
     const checkbox = document.getElementById("tutorial-skip-checkbox");
     writeSkipTutorial(!!(checkbox && checkbox.checked));
     closeTutorial();
+  });
+
+  achievementsBtn.addEventListener("click", openAchievements);
+  achievementsClose.addEventListener("click", closeAchievements);
+  achievementsOverlay.addEventListener("click", (e) => {
+    if (e.target === achievementsOverlay) closeAchievements();
   });
 
   feedbackBtn.addEventListener("click", openFeedback);
