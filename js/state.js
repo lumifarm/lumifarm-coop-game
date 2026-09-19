@@ -10,6 +10,52 @@
     finance: "財務",
   };
 
+  // 每項指標依數值高到低分五個級距的評語，index 0 = 最差、4 = 最好
+  const METRIC_EVALUATIONS = {
+    trust: [
+      "社員彼此猜忌，信任瀕臨崩解",
+      "信任出現裂痕，需要好好修補",
+      "信任還算平穩，但禁不起太多考驗",
+      "社員之間有不錯的互信基礎",
+      "社員彼此高度信任，默契十足",
+    ],
+    democracy: [
+      "決策幾乎被少數人壟斷",
+      "民主參與流於形式",
+      "還有基本的參與管道",
+      "社員普遍有參與決策的機會",
+      "資訊公開、幹部輪替，民主健全",
+    ],
+    producerRel: [
+      "生產者對合作社已經失去信心",
+      "生產者開始考慮轉單其他通路",
+      "生產者關係普通，仍有改善空間",
+      "生產者對合作社有不錯的信賴",
+      "生產者視合作社為長期夥伴",
+    ],
+    consumerSat: [
+      "消費者大量流失、抱怨四起",
+      "消費者抱怨聲浪漸增",
+      "消費者滿意度普通",
+      "消費者對品質與價格都算滿意",
+      "消費者高度信賴、主動推薦",
+    ],
+    finance: [
+      "財務瀕臨崩潰，隨時可能撐不下去",
+      "現金流吃緊，需要謹慎規劃",
+      "財務狀況普通，收支大致平衡",
+      "財務穩健，有餘裕投入發展",
+      "財務體質強健，具備擴張的本錢",
+    ],
+  };
+
+  function evaluateMetric(key, value) {
+    const tiers = METRIC_EVALUATIONS[key];
+    if (!tiers) return "";
+    const tierIndex = value <= 20 ? 0 : value <= 40 ? 1 : value <= 60 ? 2 : value <= 80 ? 3 : 4;
+    return tiers[tierIndex];
+  }
+
   function createInitialState() {
     return {
       actIndex: 0,
@@ -129,5 +175,6 @@
     computeSuccessEnding,
     currentAct,
     currentEvent,
+    evaluateMetric,
   };
 })();

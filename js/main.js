@@ -29,8 +29,8 @@
   let pendingContinue = null;
   let feedbackRating = null;
 
-  function renderMetrics() {
-    metricsBar.innerHTML = window.UI.metricsBarHTML(state);
+  function renderMetrics(deltas) {
+    metricsBar.innerHTML = window.UI.metricsBarHTML(state, deltas);
     progressBar.innerHTML = window.UI.progressHTML(state);
   }
 
@@ -57,11 +57,11 @@
     renderGlossary();
   }
 
-  function showFeedback(feedback, unlockIds, onContinue) {
+  function showFeedback(feedback, unlockIds, onContinue, deltas) {
     const titles = (unlockIds || [])
       .filter((id) => window.GLOSSARY[id])
       .map((id) => window.GLOSSARY[id].title);
-    renderMetrics();
+    renderMetrics(deltas);
     stage.innerHTML = window.UI.feedbackHTML(feedback, titles);
     pendingContinue = onContinue;
   }
@@ -93,12 +93,17 @@
     const failure = window.GameEngine.checkFailure(state);
     if (failure) {
       state.ending = failure;
-      showFeedback(option.feedback, option.unlock, () => {
-        state.phase = "ended";
-      });
+      showFeedback(
+        option.feedback,
+        option.unlock,
+        () => {
+          state.phase = "ended";
+        },
+        option.effects
+      );
       return;
     }
-    showFeedback(option.feedback, option.unlock, advance);
+    showFeedback(option.feedback, option.unlock, advance, option.effects);
   }
 
   function currentOptions() {

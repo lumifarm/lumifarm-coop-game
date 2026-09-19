@@ -111,12 +111,80 @@ body {
   border: 1px solid var(--color-border);
   border-radius: 10px;
   padding: 8px 10px;
+  position: relative;
 }
 
 .metric-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
   font-size: 0.72rem;
   color: var(--color-ink-soft);
   margin-bottom: 4px;
+}
+
+.delta-badge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 999px;
+  animation: deltaFloat 1.6s ease-out forwards;
+}
+
+.delta-badge--up {
+  background: #e3f0e5;
+  color: var(--color-primary-dark);
+}
+
+.delta-badge--down {
+  background: #fbe6e0;
+  color: var(--color-danger);
+}
+
+@keyframes deltaFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(4px) scale(0.9);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(-1px) scale(1.05);
+  }
+  75% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px) scale(1);
+  }
+}
+
+@keyframes pulseUp {
+  0% {
+    box-shadow: 0 0 0 0 rgba(63, 125, 79, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 9px rgba(63, 125, 79, 0);
+  }
+}
+
+@keyframes pulseDown {
+  0% {
+    box-shadow: 0 0 0 0 rgba(179, 69, 47, 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 9px rgba(179, 69, 47, 0);
+  }
+}
+
+.metric--pulse-up {
+  animation: pulseUp 0.9s ease-out;
+}
+
+.metric--pulse-down {
+  animation: pulseDown 0.9s ease-out;
 }
 
 .metric-track {
@@ -145,6 +213,13 @@ body {
   color: var(--color-ink-soft);
   margin-top: 2px;
   text-align: right;
+}
+
+.metric-eval {
+  font-size: 0.7rem;
+  color: var(--color-ink-soft);
+  margin-top: 4px;
+  line-height: 1.35;
 }
 
 .stage {

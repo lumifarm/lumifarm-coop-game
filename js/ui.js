@@ -10,18 +10,28 @@
     })[c]);
   }
 
-  function metricsBarHTML(state) {
+  function metricsBarHTML(state, deltas) {
     const keys = window.GameEngine.METRIC_KEYS;
     const labels = window.GameEngine.METRIC_LABELS;
     return keys
       .map((key) => {
         const value = state.metrics[key];
         const level = value <= 20 ? "danger" : value <= 40 ? "warn" : "ok";
+        const delta = deltas ? deltas[key] : null;
+        const deltaHTML =
+          delta
+            ? `<span class="delta-badge ${delta > 0 ? "delta-badge--up" : "delta-badge--down"}">${
+                delta > 0 ? "+" : ""
+              }${delta}</span>`
+            : "";
+        const pulseClass = delta ? (delta > 0 ? " metric--pulse-up" : " metric--pulse-down") : "";
+        const evalText = window.GameEngine.evaluateMetric(key, value);
         return `
-          <div class="metric metric--${level}">
-            <div class="metric-label">${labels[key]}</div>
+          <div class="metric metric--${level}${pulseClass}">
+            <div class="metric-label"><span>${labels[key]}</span>${deltaHTML}</div>
             <div class="metric-track"><div class="metric-fill" style="width:${value}%"></div></div>
             <div class="metric-value">${value}</div>
+            <div class="metric-eval">${escapeHtml(evalText)}</div>
           </div>`;
       })
       .join("");
