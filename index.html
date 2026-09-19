@@ -10,7 +10,11 @@
     <div class="app">
       <header class="topbar">
         <h1>從產地到餐桌<span class="subtitle">合作社經營模擬</span></h1>
-        <button id="glossary-btn" class="btn btn--ghost">📖 合作社小百科</button>
+        <div class="topbar-actions">
+          <button id="tutorial-btn" class="btn btn--ghost">❓ 遊戲教學</button>
+          <button id="feedback-btn" class="btn btn--ghost">💬 意見回饋</button>
+          <button id="glossary-btn" class="btn btn--ghost">📖 合作社小百科</button>
+        </div>
       </header>
 
       <div id="progress-bar" class="progress-wrap"></div>
@@ -30,6 +34,26 @@
           <button id="glossary-close" class="btn btn--icon">✕</button>
         </div>
         <div id="glossary-body" class="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="tutorial-overlay" class="modal-overlay" hidden>
+      <div class="modal">
+        <div class="modal-header">
+          <h2>遊戲教學</h2>
+          <button id="tutorial-close" class="btn btn--icon">✕</button>
+        </div>
+        <div id="tutorial-body" class="modal-body"></div>
+      </div>
+    </div>
+
+    <div id="feedback-overlay" class="modal-overlay" hidden>
+      <div class="modal">
+        <div class="modal-header">
+          <h2>意見回饋</h2>
+          <button id="feedback-close" class="btn btn--icon">✕</button>
+        </div>
+        <div id="feedback-body" class="modal-body"></div>
       </div>
     </div>
 

@@ -57,6 +57,12 @@ body {
   color: var(--color-ink-soft);
 }
 
+.topbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .progress-wrap {
   margin-bottom: 12px;
 }
@@ -326,6 +332,96 @@ body {
 }
 
 .glossary-empty {
+  color: var(--color-ink-soft);
+}
+
+.tutorial-skip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+  cursor: pointer;
+}
+
+.ending-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ending-actions .btn {
+  flex: 1 1 auto;
+}
+
+.feedback-intro {
+  color: var(--color-ink-soft);
+}
+
+.feedback-field {
+  margin-bottom: 16px;
+}
+
+.feedback-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--color-ink);
+}
+
+.feedback-field textarea {
+  width: 100%;
+  font: inherit;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  resize: vertical;
+  background: var(--color-bg);
+  color: var(--color-ink);
+}
+
+.rating-group {
+  display: flex;
+  gap: 8px;
+}
+
+.rating-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--color-ink-soft);
+}
+
+.rating-btn:hover {
+  border-color: var(--color-primary);
+}
+
+.rating-btn.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.feedback-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.feedback-actions .btn {
+  flex: 1 1 auto;
+}
+
+.feedback-note {
+  font-size: 0.78rem;
   color: var(--color-ink-soft);
 }
 

@@ -102,8 +102,47 @@
         <p>${escapeHtml(ending.text)}</p>
         <div class="ending-metrics">${metricsBarHTML(state)}</div>
         <p class="ending-note">本局共解鎖 ${unlockedCount} 則合作社小百科條目。</p>
-        <button class="btn btn--primary" data-action="restart">重新開始</button>
+        <div class="ending-actions">
+          <button class="btn btn--primary" data-action="restart">重新開始</button>
+          <button class="btn btn--ghost" data-action="open-feedback">💬 留下你的回饋</button>
+        </div>
       </section>`;
+  }
+
+  function tutorialHTML(tutorial) {
+    const paragraphs = tutorial.paragraphs.map((p) => `<p>${escapeHtml(p)}</p>`).join("");
+    return `
+      ${paragraphs}
+      <label class="tutorial-skip">
+        <input type="checkbox" id="tutorial-skip-checkbox" />
+        下次不要自動顯示這個教學
+      </label>
+      <button class="btn btn--primary" data-action="tutorial-start">${escapeHtml(tutorial.cta)}</button>`;
+  }
+
+  function feedbackFormHTML() {
+    const ratingButtons = [1, 2, 3, 4, 5]
+      .map((n) => `<button type="button" class="rating-btn" data-action="rate" data-value="${n}">${n}</button>`)
+      .join("");
+    return `
+      <p class="feedback-intro">這個遊戲有沒有讓你更了解合作社？你的想法能幫助我們把它做得更有趣、更貼近實際經營合作社的樣子。</p>
+      <div class="feedback-field">
+        <div class="feedback-label">這個遊戲好玩嗎？（1 分不好玩，5 分很好玩）</div>
+        <div class="rating-group" id="rating-group">${ratingButtons}</div>
+      </div>
+      <div class="feedback-field">
+        <label class="feedback-label" for="feedback-favorite">哪個部分最有趣，或最讓你想多了解合作社？</label>
+        <textarea id="feedback-favorite" rows="2" placeholder="（選填）"></textarea>
+      </div>
+      <div class="feedback-field">
+        <label class="feedback-label" for="feedback-suggestion">有沒有覺得卡關、不合理，或希望改進的地方？</label>
+        <textarea id="feedback-suggestion" rows="3" placeholder="（選填）"></textarea>
+      </div>
+      <div class="feedback-actions">
+        <button class="btn btn--primary" data-action="feedback-email">✉️ 用 Email 送出</button>
+        <button class="btn btn--ghost" data-action="feedback-github">在 GitHub 留言</button>
+      </div>
+      <p class="feedback-note">送出時只會打開你自己的郵件軟體或 GitHub 頁面，內容由你確認後才會真的寄出／發佈，我們不會偷偷收集任何資料。</p>`;
   }
 
   function glossaryHTML(unlockedSet) {
@@ -131,5 +170,7 @@
     feedbackHTML,
     endingHTML,
     glossaryHTML,
+    tutorialHTML,
+    feedbackFormHTML,
   };
 })();
