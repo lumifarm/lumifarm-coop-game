@@ -15,12 +15,15 @@
 
 * {
   box-sizing: border-box;
+  min-width: 0;
 }
 
 html,
 body {
   margin: 0;
   padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: var(--color-bg);
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140' viewBox='0 0 140 140'%3E%3Cg fill='none' stroke='%23ddd0ac' stroke-width='1.6' stroke-linecap='round' opacity='0.6'%3E%3Cpath d='M40 120 L40 90'/%3E%3Cpath d='M40 94 C34 92 32 96 34 100'/%3E%3Cpath d='M40 94 C46 92 48 96 46 100'/%3E%3Cpath d='M40 101 C34 99 32 103 34 107'/%3E%3Cpath d='M40 101 C46 99 48 103 46 107'/%3E%3Cpath d='M100 50 L100 20'/%3E%3Cpath d='M100 24 C94 22 92 26 94 30'/%3E%3Cpath d='M100 24 C106 22 108 26 106 30'/%3E%3Cpath d='M100 31 C94 29 92 33 94 37'/%3E%3Cpath d='M100 31 C106 29 108 33 106 37'/%3E%3C/g%3E%3C/svg%3E");
   background-repeat: repeat;
@@ -246,6 +249,8 @@ body {
   border-radius: var(--radius);
   padding: 22px;
   box-shadow: 0 1px 3px rgba(47, 42, 32, 0.06);
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .card h2 {
@@ -288,6 +293,44 @@ body {
 
 .btn--option {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.option-label {
+  text-align: left;
+}
+
+.option-effects {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.effect-chip {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.effect-chip--up {
+  background: #e3f0e5;
+  color: var(--color-primary-dark);
+}
+
+.effect-chip--down {
+  background: #fbe6e0;
+  color: var(--color-danger);
+}
+
+.ending-route {
+  font-size: 0.85rem;
+  color: var(--color-ink-soft);
+  margin-top: -8px;
 }
 
 .btn--primary {
@@ -393,6 +436,7 @@ body {
   max-width: 560px;
   width: 100%;
   max-height: 80vh;
+  max-height: 80dvh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -523,6 +567,7 @@ body {
 .rating-btn {
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
   border-radius: 50%;
   border: 1px solid var(--color-border);
   background: var(--color-surface);
@@ -559,10 +604,36 @@ body {
 }
 
 @media (max-width: 480px) {
+  .app {
+    padding: 12px 12px 40px;
+  }
   .card {
     padding: 16px;
   }
   .topbar h1 {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
+  }
+  .brand-icon {
+    width: 36px;
+    height: 36px;
+  }
+  .card-icon {
+    font-size: 1.9rem;
+  }
+  .rating-group {
+    flex-wrap: wrap;
+  }
+  .rating-btn {
+    width: 36px;
+    height: 36px;
+  }
+  .btn {
+    padding: 11px 14px;
+  }
+}
+
+@media (max-width: 360px) {
+  .metrics-wrap {
+    grid-template-columns: 1fr;
   }
 }

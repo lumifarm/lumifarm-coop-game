@@ -62,9 +62,14 @@
     } else if (state.phase === "quiz") {
       stage.innerHTML = window.UI.quizHTML(act.quiz);
     } else if (state.phase === "outro") {
-      stage.innerHTML = window.UI.outroHTML(act);
+      stage.innerHTML = window.UI.outroHTML(act, window.GameEngine.computeRoute(state));
     } else if (state.phase === "ended") {
-      stage.innerHTML = window.UI.endingHTML(state.ending, state, state.unlocked.size);
+      stage.innerHTML = window.UI.endingHTML(
+        state.ending,
+        state,
+        state.unlocked.size,
+        window.GameEngine.ROUTE_LABELS[window.GameEngine.computeRoute(state)]
+      );
     }
     renderGlossary();
   }
@@ -79,12 +84,11 @@
   }
 
   function advance() {
-    const act = window.GameEngine.currentAct(state);
     if (state.phase === "intro") {
       state.phase = "event";
     } else if (state.phase === "event") {
       state.eventIndex += 1;
-      state.phase = state.eventIndex >= act.events.length ? "quiz" : "event";
+      state.phase = state.eventIndex >= window.GameEngine.currentEventCount(state) ? "quiz" : "event";
     } else if (state.phase === "quiz") {
       state.phase = "outro";
     } else if (state.phase === "outro") {
@@ -100,8 +104,10 @@
   }
 
   function handleChoice(option) {
-    window.GameEngine.applyEffects(state, option.effects);
+    const effects = window.GameEngine.previewEffects(option.effects);
+    window.GameEngine.applyEffects(state, effects);
     window.GameEngine.applyUnlocks(state, option.unlock);
+    window.GameEngine.applyRouteLean(state, option.lean);
     const failure = window.GameEngine.checkFailure(state);
     if (failure) {
       state.ending = failure;
@@ -111,11 +117,11 @@
         () => {
           state.phase = "ended";
         },
-        option.effects
+        effects
       );
       return;
     }
-    showFeedback(option.feedback, option.unlock, advance, option.effects);
+    showFeedback(option.feedback, option.unlock, advance, effects);
   }
 
   function currentOptions() {

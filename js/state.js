@@ -1,6 +1,10 @@
 // 遊戲狀態：指標運算、失敗判定、結局判定
 (function () {
   const METRIC_KEYS = ["trust", "democracy", "producerRel", "consumerSat", "finance"];
+  const EVENTS_PER_ACT = 4;
+  // 每回合被動的基本營運收支（象徵日常小額收入），讓「合理的選擇」不會單純因為
+  // 投資信任／民主而必然拖垮財務——玩家在選擇前看到的數字，就是實際會套用的數字。
+  const PASSIVE_FINANCE_DRIFT = 4;
 
   const METRIC_LABELS = {
     trust: "信任",
@@ -8,6 +12,20 @@
     producerRel: "生產者關係",
     consumerSat: "消費者滿意度",
     finance: "財務",
+  };
+
+  const METRIC_SHORT_LABELS = {
+    trust: "信任",
+    democracy: "民主",
+    producerRel: "生產",
+    consumerSat: "消費",
+    finance: "財務",
+  };
+
+  const ROUTE_LABELS = {
+    producer: "偏生產者導向",
+    consumer: "偏消費者導向",
+    hybrid: "生產者＋消費者共治",
   };
 
   // 每項指標依數值高到低分五個級距的評語，index 0 = 最差、4 = 最好
@@ -56,14 +74,36 @@
     return tiers[tierIndex];
   }
 
+  // Fisher-Yates：回傳 0..n-1 的隨機排列，用來打亂事件順序、確保同一階段不會抽到重複事件
+  function shuffledRange(n) {
+    const arr = Array.from({ length: n }, (_, i) => i);
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = arr[i];
+      arr[i] = arr[j];
+      arr[j] = tmp;
+    }
+    return arr;
+  }
+
+  // 把「基本營運收支」疊加到選項本來的效果上，preview 與實際套用都用這個函式，確保
+  // 玩家選擇前看到的數字，跟選完之後套用的數字完全一致。
+  function previewEffects(effects) {
+    const result = Object.assign({}, effects);
+    result.finance = (result.finance || 0) + PASSIVE_FINANCE_DRIFT;
+    return result;
+  }
+
   function createInitialState() {
+    const acts = window.GAME_CONTENT.acts;
     return {
       actIndex: 0,
       eventIndex: 0,
       phase: "intro", // intro | event | quiz | outro | ended
       metrics: { trust: 50, democracy: 50, producerRel: 50, consumerSat: 50, finance: 50 },
       unlocked: new Set(),
-      log: [],
+      eventOrders: acts.map((act) => shuffledRange(act.events.length).slice(0, EVENTS_PER_ACT)),
+      routeTally: { producer: 0, consumer: 0 },
       ending: null,
     };
   }
@@ -81,6 +121,24 @@
 
   function applyUnlocks(state, unlockIds) {
     (unlockIds || []).forEach((id) => state.unlocked.add(id));
+  }
+
+  function applyRouteLean(state, lean) {
+    if (!lean) return;
+    if (lean === "producer") state.routeTally.producer += 1;
+    else if (lean === "consumer") state.routeTally.consumer += 1;
+    else if (lean === "hybrid") {
+      state.routeTally.producer += 1;
+      state.routeTally.consumer += 1;
+    }
+  }
+
+  // 「結識夥伴」階段的選擇傾向，決定光農合作社最終走向生產者導向、消費者導向，還是原本的共治路線
+  function computeRoute(state) {
+    const diff = state.routeTally.producer - state.routeTally.consumer;
+    if (diff >= 2) return "producer";
+    if (diff <= -2) return "consumer";
+    return "hybrid";
   }
 
   // 核心指標歸零就判定失敗，回傳失敗類型；否則回傳 null
@@ -127,6 +185,26 @@
 
   function computeSuccessEnding(state) {
     const m = state.metrics;
+    const route = computeRoute(state);
+
+    if (route === "producer" && m.producerRel >= 70) {
+      return {
+        type: "producerled",
+        icon: "🚜",
+        title: "結局：生產者自主型",
+        text:
+          "光農合作社最終長成一個以生產者為主體的合作社：農友們共同運銷、共同議價，不再任由中間商決定收購價。消費者依然是穩定的客戶，但真正握有決策權的，是站在產地第一線的人。",
+      };
+    }
+    if (route === "consumer" && m.consumerSat >= 70) {
+      return {
+        type: "consumerled",
+        icon: "🛍️",
+        title: "結局：消費者自主型",
+        text:
+          "光農合作社最終長成一個以消費者為主體的共同購買組織：一群認同理念的家庭，穩定地向信任的產地下單。生產者是重要的合作夥伴，但真正共同擁有、共同決定這個組織的，是這群消費者社員。",
+      };
+    }
     if (m.finance >= 75) {
       return {
         type: "vertical",
@@ -167,22 +245,35 @@
     return window.GAME_CONTENT.acts[state.actIndex];
   }
 
+  function currentEventCount(state) {
+    return state.eventOrders[state.actIndex].length;
+  }
+
   function currentEvent(state) {
     const act = currentAct(state);
-    return act ? act.events[state.eventIndex] : null;
+    if (!act) return null;
+    const order = state.eventOrders[state.actIndex];
+    return act.events[order[state.eventIndex]];
   }
 
   window.GameEngine = {
     METRIC_KEYS,
     METRIC_LABELS,
+    METRIC_SHORT_LABELS,
+    ROUTE_LABELS,
+    PASSIVE_FINANCE_DRIFT,
     createInitialState,
     clamp,
+    previewEffects,
     applyEffects,
     applyUnlocks,
+    applyRouteLean,
+    computeRoute,
     checkFailure,
     computeSuccessEnding,
     currentAct,
     currentEvent,
+    currentEventCount,
     evaluateMetric,
   };
 })();

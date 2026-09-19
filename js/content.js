@@ -21,6 +21,12 @@ window.GAME_CONTENT = {
         "在光農合作社真正成立之前，你只是一個對「食物從哪裡來」感到不安的人。要組成一個生產者與消費者共同合作的合作社，得先找到願意一起走這條路的人——這是最容易被忽略、卻也最關鍵的起點。",
       outro:
         "經過幾個月的接觸、嘗試與磨合，你身邊逐漸聚集了一群理念相近、彼此信任的人：幾位願意嘗試的小農、一群真心關心食物來源的鄰居。是時候把這群人正式組織起來，成立「光農合作社」了。",
+      outroByRoute: {
+        producer:
+          "這幾個月下來，你發現真正投入、真正留下來的，多半是生產端的農友——大家更想要的是共同運銷、共同議價的力量，而不是拉一群消費者一起開會。光農合作社決定先以生產者為主體成立，走一條更貼近「生產合作社」的路。",
+        consumer:
+          "這幾個月下來，你發現真正投入、真正留下來的，多半是身邊那群在意食物來源的消費者——比起拉農民一起參與治理，大家更想要的是一個可以信賴、穩定採購的共同購買體系。光農合作社決定先以消費者為主體成立，走一條更貼近「消費合作社」的路。",
+      },
       events: [
         {
           id: "0-1",
@@ -34,6 +40,7 @@ window.GAME_CONTENT = {
               feedback:
                 "比起說一百句「這個很好吃」，讓人親自嘗過一次更有說服力。人數不多，但每個人都留下了具體的印象。",
               unlock: ["communitytriangle"],
+              lean: "hybrid",
             },
             {
               label: "在社群媒體與社區佈告欄大量宣傳，盡量觸及最多人",
@@ -41,6 +48,7 @@ window.GAME_CONTENT = {
               feedback:
                 "觸及的人數確實變多了，但多半只是被「便宜」、「新奇」吸引的短暫興趣，還稱不上真正認同理念的夥伴。",
               unlock: ["reasons"],
+              lean: "consumer",
             },
             {
               label: "先去找相熟的小農聊聊，從產地端建立起第一個節點",
@@ -48,6 +56,7 @@ window.GAME_CONTENT = {
               feedback:
                 "農民願意聽你把話說完，是因為信任早就在日常往來中累積。從產地端切入，讓你第一手理解生產者真正的困境。",
               unlock: ["smallfarmer"],
+              lean: "producer",
             },
             {
               label: "什麼都先不做，等有興趣的人自己主動來找你",
@@ -70,6 +79,7 @@ window.GAME_CONTENT = {
               feedback:
                 "坦白說「我們還在摸索」，反而比誇下海口更容易建立信任。對方願意一起把規則從零磨出來，這份參與感本身就是承諾的開始。",
               unlock: ["reasons"],
+              lean: "hybrid",
             },
             {
               label: "承諾保證收購價與數量，先讓對方安心加入",
@@ -77,6 +87,7 @@ window.GAME_CONTENT = {
               feedback:
                 "對方確實比較放心加入了，但你其實還沒有能力兌現這個承諾。過度浪漫的起步，往往是後續信任崩解的伏筆。",
               unlock: [],
+              lean: "producer",
             },
             {
               label: "找已經合作過的其他小農幫忙背書、介紹",
@@ -84,6 +95,7 @@ window.GAME_CONTENT = {
               feedback:
                 "熟人的引薦，讓陌生的提案多了一層社會擔保。信任的建立，往往仰賴既有的社會網絡，而不是從零開始說服。",
               unlock: ["trustdistance"],
+              lean: "producer",
             },
             {
               label: "先簽一份簡單的書面備忘錄，把雙方的期待寫清楚",
@@ -91,6 +103,7 @@ window.GAME_CONTENT = {
               feedback:
                 "白紙黑字不代表沒有人情，反而讓雙方對彼此的角色與期待，從一開始就有共同的參照點。",
               unlock: ["prototype"],
+              lean: "hybrid",
             },
           ],
         },
@@ -106,6 +119,7 @@ window.GAME_CONTENT = {
               feedback:
                 "起步的人數不多，但每一個人都是因為認同而留下來，這樣的種子成員，日後比較不容易在困難時刻退出。",
               unlock: ["reasons"],
+              lean: "consumer",
             },
             {
               label: "辦一場理念說明會，篩選出真正有共鳴的人",
@@ -113,6 +127,7 @@ window.GAME_CONTENT = {
               feedback:
                 "說明會不只是招募，也是第一次讓大家練習「一起討論」的場合，這對之後的民主治理是很好的暖身。",
               unlock: ["communitytriangle"],
+              lean: "hybrid",
             },
             {
               label: "只強調「比市價便宜」，快速衝高人數",
@@ -120,6 +135,7 @@ window.GAME_CONTENT = {
               feedback:
                 "人數很快就衝上去了，但只被價格吸引來的人，也最容易在需要一起承擔勞動或責任時悄悄消失。",
               unlock: ["freerider"],
+              lean: "consumer",
             },
             {
               label: "來者不拒，完全不特別篩選",
@@ -142,6 +158,7 @@ window.GAME_CONTENT = {
               feedback:
                 "多花幾個月磨合，看起來慢，其實是把後面可能踩到的地雷提前排除。信任的文化需要時間累積，急不得。",
               unlock: ["nordic"],
+              lean: "hybrid",
             },
             {
               label: "現在就去登記，趁大家士氣正旺",
@@ -156,6 +173,7 @@ window.GAME_CONTENT = {
               feedback:
                 "外部視角能幫你看見自己人容易忽略的盲點，這筆顧問費用，換來的是少走一些冤枉路。",
               unlock: ["orgadvantage"],
+              lean: "hybrid",
             },
             {
               label: "先寫一份簡單的章程草案，讓大家一起討論、修改",
@@ -163,6 +181,43 @@ window.GAME_CONTENT = {
               feedback:
                 "章程草案讓抽象的「大家一起決定」變成具體可以逐條討論的文字，也是日後民主治理的第一份共同文件。",
               unlock: ["prototype"],
+              lean: "hybrid",
+            },
+          ],
+        },
+        {
+          id: "0-5",
+          title: "組織的第一筆錢，該從哪裡來？",
+          situation:
+            "大家都很想開始，但一講到啟動資金，卻沒有人願意先出錢。你發現，好像只有自己一直在為這件事墊錢。",
+          options: [
+            {
+              label: "先由發起人自己墊付部分啟動資金，但明確約定日後歸還方式",
+              effects: { trust: 10, finance: -10 },
+              feedback:
+                "先墊錢確實讓事情動起來了，但研究也發現，這種由組織者「超限利用」自身資源的模式，容易把原本該集體承擔的風險，悄悄轉嫁到少數人身上。至少你有先說清楚怎麼歸還，這一步很重要。",
+              unlock: ["founderrisk"],
+            },
+            {
+              label: "堅持要等到大家都能出一份小額股金才開始，寧可慢一點",
+              effects: { democracy: 10, trust: 5, finance: -5 },
+              feedback:
+                "起步慢了一些，但風險從一開始就是大家共同承擔，而不是由你一個人扛。",
+              unlock: ["founderrisk"],
+            },
+            {
+              label: "向外部尋求小額貸款或補助，分散資金壓力",
+              effects: { finance: 5, democracy: -5 },
+              feedback:
+                "民主治理與股息限制，本來就讓合作社募資天生比一般企業慢；借助外部資源能緩解一時壓力，但也代表得配合外部條件的期程與規範。",
+              unlock: ["capitalchallenge"],
+            },
+            {
+              label: "先用最低限度的資源開始，什麼設備都不添購，把規模壓到最小",
+              effects: { finance: 5, trust: -5 },
+              feedback:
+                "現金壓力小了，但因陋就簡的起步，也讓一些原本可以避免的失誤，多了發生的機會。",
+              unlock: ["capitalchallenge"],
             },
           ],
         },
@@ -357,6 +412,42 @@ window.GAME_CONTENT = {
             },
           ],
         },
+        {
+          id: "1-5",
+          title: "有些社員只出席大會，卻從不參與勞務",
+          situation:
+            "隨著社員年紀漸長或生活重心轉移，一部分人漸漸只剩下「掛名」，只來參加大會，卻不再參與共購的任何勞務。你開始思考，該怎麼面對這種「多態社員」的現實。",
+          options: [
+            {
+              label: "承認社員本就會有不同的參與型態，劃分身份並調整對應的權利義務",
+              effects: { democracy: 10, trust: 5 },
+              feedback:
+                "研究者觀察到，勞動合作社的社員其實可以概略分成全職、贊助、兼職、休眠等類型。與其要求整齊劃一，不如誠實面對這種多樣性，設計對應的參與方式。",
+              unlock: ["memberdiversity"],
+            },
+            {
+              label: "要求所有社員都必須符合同一套勞務標準，不符合就退社",
+              effects: { democracy: -5, trust: -10, finance: 5 },
+              feedback:
+                "標準是統一了，但這麼做也趕走了一群仍然認同理念、只是階段性無法出力的老社員。",
+              unlock: [],
+            },
+            {
+              label: "睜一隻眼閉一隻眼，反正社員人數還算多",
+              effects: { trust: -10, finance: -5 },
+              feedback:
+                "人數多不代表關係穩固。當越來越多人只剩下名義上的社員身份，搭便車的現實就在悄悄擴大。",
+              unlock: ["freerider"],
+            },
+            {
+              label: "檢視這些長期不參與的社員的股金與代理投票權，思考是否該有退場機制",
+              effects: { democracy: 10, finance: 5, trust: -5 },
+              feedback:
+                "討論退場機制不是要趕人，而是誠實面對「社員」這個身份，不該只是一張永久不變的名單。",
+              unlock: ["memberdiversity"],
+            },
+          ],
+        },
       ],
       quiz: {
         id: "1-quiz",
@@ -548,6 +639,42 @@ window.GAME_CONTENT = {
             },
           ],
         },
+        {
+          id: "2-5",
+          title: "社員大會一年只開一次，理監事早就自己決定好了",
+          situation:
+            "依法社員大會每年至少開一次就符合規定，你卻發現真正的決策早在理監事會就已經拍板，社員大會只是形式上「追認」而已。",
+          options: [
+            {
+              label: "增加社務會的召開頻率，讓決策討論提前到更多社員能參與的場合",
+              effects: { democracy: 15, finance: -5 },
+              feedback:
+                "當「主事者權責相符」的效率考量走過頭，經營權力就會悄悄從全體社員讓渡到少數人身上。增開社務會，是把討論的時間點往前挪，讓社員在事情定案前就能參與。",
+              unlock: ["ownershipcontrol"],
+            },
+            {
+              label: "維持現狀，反正法定次數已經足夠",
+              effects: { democracy: -15 },
+              feedback:
+                "符合法令的最低標準，不代表符合合作社真正需要的民主對話。表面上仍是集體所有，實際上決策權早已集中在少數人手上。",
+              unlock: ["ownershipcontrol"],
+            },
+            {
+              label: "把重大議案的討論資料提前公開，讓社員在大會前就能表達意見",
+              effects: { democracy: 10, trust: 5, finance: -5 },
+              feedback:
+                "光是把資料提前公開，就已經是很不一樣的一步——至少社員有機會在事情定案前，先看懂發生了什麼事。",
+              unlock: ["laidlaw"],
+            },
+            {
+              label: "讓全職社員擁有更多決策空間，反正他們最熟悉業務",
+              effects: { finance: 10, democracy: -15 },
+              feedback:
+                "業務效率確實提高了，但這正是所有權與控制權逐漸分離的開始：組織形式上仍屬於全體社員，但誰在真正做決定，早已悄悄换了人。",
+              unlock: ["ownershipcontrol"],
+            },
+          ],
+        },
       ],
       quiz: {
         id: "2-quiz",
@@ -736,6 +863,42 @@ window.GAME_CONTENT = {
               feedback:
                 "比起制式的教育訓練，一對一的傳承關係更容易建立起真實的情感連結，也更容易讓價值觀真正被記住。",
               unlock: ["principles"],
+            },
+          ],
+        },
+        {
+          id: "3-5",
+          title: "資深社員只想在退休前把股金領回，不願再投資",
+          situation:
+            "加工場穩定獲利後，部分資深社員開始主張應該優先分光盈餘、盡量少做再投資，甚至有人提議把部分業務外包給廉價人力，好增加眼前的分紅。",
+          options: [
+            {
+              label: "堅持依合作原則，盈餘優先提撥公積金與教育金，而非優先分光",
+              effects: { democracy: 10, trust: 5, finance: -5 },
+              feedback:
+                "學者指出，合作社常見的退化路徑之一，就是社員只關心退休前能領回多少而抗拒長期投資。守住公積金與教育金的優先順序，是避免組織不知不覺被資本邏輯接管的關鍵防線。",
+              unlock: ["degeneration"],
+            },
+            {
+              label: "順應資深社員的要求，優先把盈餘分光",
+              effects: { finance: 10, trust: -5, democracy: -10 },
+              feedback:
+                "短期內大家都很開心，但這正是合作社退化為一般逐利企業的第一步——不再有人願意為了組織的未來，犧牲眼前的分紅。",
+              unlock: ["degeneration"],
+            },
+            {
+              label: "同意外包部分業務給廉價人力，以增加分紅空間",
+              effects: { finance: 15, producerRel: -15, trust: -10 },
+              feedback:
+                "把原本該由社員共同承擔的勞動外包給廉價人力，正是「偽合作社」的常見手法之一——對內剝削、對外破壞勞動市場，最終傷害的是整個合作社的社會信任。",
+              unlock: ["pseudocoop"],
+            },
+            {
+              label: "召開社員大會公開討論公積金與分紅比例，由全體社員共同決定",
+              effects: { democracy: 15, trust: 10, finance: -5 },
+              feedback:
+                "把分配比例攤在陽光下讓大家一起決定，比任何一個人單方面主張「應該怎麼分」，更能讓決議真正被所有人接受。",
+              unlock: ["degeneration"],
             },
           ],
         },

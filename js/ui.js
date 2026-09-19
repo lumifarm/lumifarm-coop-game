@@ -58,22 +58,41 @@
       </section>`;
   }
 
-  function outroHTML(act) {
+  function outroHTML(act, route) {
+    const text = (route && act.outroByRoute && act.outroByRoute[route]) || act.outro;
     return `
       <section class="card card--outro">
         <div class="card-icon">${act.icon || ""}</div>
         <h2>${escapeHtml(act.title)}・階段小結</h2>
-        <p>${escapeHtml(act.outro)}</p>
+        <p>${escapeHtml(text)}</p>
         <button class="btn btn--primary" data-action="continue">繼續</button>
       </section>`;
   }
 
+  function effectChipsHTML(effects) {
+    const keys = window.GameEngine.METRIC_KEYS;
+    const shortLabels = window.GameEngine.METRIC_SHORT_LABELS;
+    return keys
+      .filter((key) => effects[key])
+      .map((key) => {
+        const value = effects[key];
+        const cls = value > 0 ? "effect-chip--up" : "effect-chip--down";
+        const sign = value > 0 ? "+" : "";
+        return `<span class="effect-chip ${cls}">${shortLabels[key]}${sign}${value}</span>`;
+      })
+      .join("");
+  }
+
   function optionsHTML(options) {
     return options
-      .map(
-        (opt, i) =>
-          `<button class="btn btn--option" data-action="choose" data-index="${i}">${escapeHtml(opt.label)}</button>`
-      )
+      .map((opt, i) => {
+        const preview = window.GameEngine.previewEffects(opt.effects);
+        return `
+          <button class="btn btn--option" data-action="choose" data-index="${i}">
+            <span class="option-label">${escapeHtml(opt.label)}</span>
+            <span class="option-effects">${effectChipsHTML(preview)}</span>
+          </button>`;
+      })
       .join("");
   }
 
@@ -115,11 +134,12 @@
       </section>`;
   }
 
-  function endingHTML(ending, state, unlockedCount) {
+  function endingHTML(ending, state, unlockedCount, routeLabel) {
     return `
       <section class="card card--ending card--ending-${ending.type}">
         <div class="card-icon">${ending.icon || ""}</div>
         <h2>${escapeHtml(ending.title)}</h2>
+        ${routeLabel ? `<p class="ending-route">本局路線：${escapeHtml(routeLabel)}</p>` : ""}
         <p>${escapeHtml(ending.text)}</p>
         <div class="ending-metrics">${metricsBarHTML(state)}</div>
         <p class="ending-note">本局共解鎖 ${unlockedCount} 則合作社小百科條目。</p>
