@@ -1,0 +1,23 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Node (in case tooling is added later)
+node_modules/
+dist/
+.env
+.env.*
+npm-debug.log*
+
+# Local reference materials (kept outside the repo)
+*.pdf
+
+# Logs / temp
+*.log
+.tmp/

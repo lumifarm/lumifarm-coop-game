@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>從產地到餐桌：合作社經營模擬</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <h1>從產地到餐桌<span class="subtitle">合作社經營模擬</span></h1>
+        <button id="glossary-btn" class="btn btn--ghost">📖 合作社小百科</button>
+      </header>
+
+      <div id="progress-bar" class="progress-wrap"></div>
+      <div id="metrics-bar" class="metrics-wrap"></div>
+
+      <main id="stage" class="stage"></main>
+
+      <footer class="footer">
+        內容改編自簡報《從產地到餐桌：如何經濟民主》，所有情境為改寫詮釋，非逐字引用。
+      </footer>
+    </div>
+
+    <div id="glossary-overlay" class="modal-overlay" hidden>
+      <div class="modal">
+        <div class="modal-header">
+          <h2>合作社小百科</h2>
+          <button id="glossary-close" class="btn btn--icon">✕</button>
+        </div>
+        <div id="glossary-body" class="modal-body"></div>
+      </div>
+    </div>
+
+    <script src="js/content.js"></script>
+    <script src="js/glossary.js"></script>
+    <script src="js/state.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+  </body>
+</html>
