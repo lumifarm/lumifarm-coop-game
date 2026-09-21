@@ -645,6 +645,22 @@ body {
   color: var(--color-ink-soft);
 }
 
+.feedback-status {
+  min-height: 1.2em;
+  font-size: 0.85rem;
+  color: var(--color-danger);
+}
+
+.feedback-success {
+  text-align: center;
+  padding: 12px 0;
+}
+
+.feedback-success-icon {
+  font-size: 2.4rem;
+  margin: 0 0 8px;
+}
+
 @media (max-width: 480px) {
   .app {
     padding: 12px 12px 40px;

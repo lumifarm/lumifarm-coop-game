@@ -194,10 +194,19 @@
         <textarea id="feedback-suggestion" rows="3" placeholder="（選填）"></textarea>
       </div>
       <div class="feedback-actions">
-        <button class="btn btn--primary" data-action="feedback-email">✉️ 用 Email 送出</button>
-        <button class="btn btn--ghost" data-action="feedback-github">在 GitHub 留言</button>
+        <button class="btn btn--primary" data-action="feedback-submit">送出回饋</button>
       </div>
-      <p class="feedback-note">送出時只會打開你自己的郵件軟體或 GitHub 頁面，內容由你確認後才會真的寄出／發佈，我們不會偷偷收集任何資料。</p>`;
+      <p id="feedback-status" class="feedback-status" role="status"></p>
+      <p class="feedback-note">送出後會直接寄到我們的信箱，不會用於其他用途，也不會公開顯示。</p>`;
+  }
+
+  function feedbackSuccessHTML() {
+    return `
+      <div class="feedback-success">
+        <p class="feedback-success-icon">🎉</p>
+        <p>謝謝你的回饋！已經直接送到我們的信箱了。</p>
+        <button class="btn btn--primary" data-action="close-feedback">關閉</button>
+      </div>`;
   }
 
   function glossaryHTML(unlockedSet) {
@@ -230,5 +239,6 @@
     glossaryHTML,
     tutorialHTML,
     feedbackFormHTML,
+    feedbackSuccessHTML,
   };
 })();

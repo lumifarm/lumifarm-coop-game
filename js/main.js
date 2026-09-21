@@ -1,7 +1,8 @@
 // 遊戲流程控制與事件綁定
 (function () {
-  const REPO_URL = "https://github.com/lumifarm/lumifarm-coop-game";
-  const FEEDBACK_EMAIL = "info@lumifarm.org";
+  const EMAILJS_PUBLIC_KEY = "BcWO0rGunj8MWbrKk";
+  const EMAILJS_SERVICE_ID = "service_tyvivco";
+  const EMAILJS_TEMPLATE_ID = "template_gydmpku";
   const TUTORIAL_SKIP_KEY = "lumifarm_coop_game_skip_tutorial";
   const ACHIEVEMENTS_KEY = "lumifarm_coop_game_achievements";
 
@@ -211,29 +212,32 @@
     feedbackOverlay.hidden = true;
   }
 
-  function buildFeedbackText() {
-    const favorite = (document.getElementById("feedback-favorite") || {}).value || "";
-    const suggestion = (document.getElementById("feedback-suggestion") || {}).value || "";
-    const ratingText = feedbackRating ? `${feedbackRating} / 5` : "未評分";
-    return { favorite: favorite.trim(), suggestion: suggestion.trim(), ratingText };
-  }
+  function submitFeedback() {
+    const favoriteEl = document.getElementById("feedback-favorite");
+    const suggestionEl = document.getElementById("feedback-suggestion");
+    const statusEl = document.getElementById("feedback-status");
+    const submitBtn = feedbackBody.querySelector('[data-action="feedback-submit"]');
+    const ratingText = feedbackRating ? `${feedbackRating} 分` : "未評分";
+    const favorite = (favoriteEl && favoriteEl.value.trim()) || "（未填寫）";
+    const suggestion = (suggestionEl && suggestionEl.value.trim()) || "（未填寫）";
 
-  function submitFeedbackByEmail() {
-    const { favorite, suggestion, ratingText } = buildFeedbackText();
-    const subject = encodeURIComponent("光農合作社遊戲回饋");
-    const body = encodeURIComponent(
-      `好玩程度：${ratingText}\n\n最有趣／最想深入了解的部分：\n${favorite || "（未填寫）"}\n\n希望改進的地方：\n${suggestion || "（未填寫）"}\n`
-    );
-    window.location.href = `mailto:${FEEDBACK_EMAIL}?subject=${subject}&body=${body}`;
-  }
+    if (typeof emailjs === "undefined") {
+      if (statusEl) statusEl.textContent = "送出功能暫時無法使用，請稍後再試一次。";
+      return;
+    }
 
-  function submitFeedbackByGithub() {
-    const { favorite, suggestion, ratingText } = buildFeedbackText();
-    const title = encodeURIComponent(`遊戲回饋：好玩程度 ${ratingText}`);
-    const body = encodeURIComponent(
-      `**好玩程度**：${ratingText}\n\n**最有趣／最想深入了解的部分**\n${favorite || "（未填寫）"}\n\n**希望改進的地方**\n${suggestion || "（未填寫）"}\n`
-    );
-    window.open(`${REPO_URL}/issues/new?title=${title}&body=${body}`, "_blank", "noopener");
+    if (submitBtn) submitBtn.disabled = true;
+    if (statusEl) statusEl.textContent = "傳送中...";
+
+    emailjs
+      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { rating: ratingText, favorite, suggestion })
+      .then(() => {
+        feedbackBody.innerHTML = window.UI.feedbackSuccessHTML();
+      })
+      .catch(() => {
+        if (submitBtn) submitBtn.disabled = false;
+        if (statusEl) statusEl.textContent = "送出失敗，請確認網路連線後再按一次「送出回饋」（你剛剛填寫的內容都還在）。";
+      });
   }
 
   stage.addEventListener("click", (e) => {
@@ -297,11 +301,10 @@
     if (e.target === achievementsOverlay) closeAchievements();
   });
 
+  // 意見回饋視窗故意不支援「點背景關閉」——避免使用者填到一半不小心點到背景，
+  // 辛苦打的內容就整個不見，只能用右上角的 ✕ 或送出成功後的「關閉」按鈕離開。
   feedbackBtn.addEventListener("click", openFeedback);
   feedbackClose.addEventListener("click", closeFeedback);
-  feedbackOverlay.addEventListener("click", (e) => {
-    if (e.target === feedbackOverlay) closeFeedback();
-  });
   feedbackBody.addEventListener("click", (e) => {
     const rateBtn = e.target.closest('button[data-action="rate"]');
     if (rateBtn) {
@@ -311,16 +314,18 @@
       });
       return;
     }
-    const emailBtn = e.target.closest('button[data-action="feedback-email"]');
-    if (emailBtn) {
-      submitFeedbackByEmail();
+    if (e.target.closest('button[data-action="feedback-submit"]')) {
+      submitFeedback();
       return;
     }
-    const githubBtn = e.target.closest('button[data-action="feedback-github"]');
-    if (githubBtn) {
-      submitFeedbackByGithub();
+    if (e.target.closest('button[data-action="close-feedback"]')) {
+      closeFeedback();
     }
   });
+
+  if (typeof emailjs !== "undefined") {
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+  }
 
   render();
   if (!readSkipTutorial()) {
