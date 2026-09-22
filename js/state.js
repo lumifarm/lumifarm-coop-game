@@ -4,7 +4,7 @@
   const EVENTS_PER_ACT = 4;
   // 每回合被動的基本營運收支（象徵日常小額收入），讓「合理的選擇」不會單純因為
   // 投資信任／民主而必然拖垮財務。
-  const PASSIVE_FINANCE_DRIFT = 4;
+  const PASSIVE_FINANCE_DRIFT = 2;
   // 難度倍率：把每個選項本來的指標增減幅度放大，讓單一選擇的後果更明顯、遊戲更難穩定通關。
   const DIFFICULTY_MULTIPLIER = 1.8;
 
@@ -296,14 +296,14 @@
     if (route === "consumer" && m.consumerSat >= 70) {
       return Object.assign({ type: "consumerled" }, ENDING_CATALOG.consumerled);
     }
-    if (m.finance >= 75) {
-      return Object.assign({ type: "vertical" }, ENDING_CATALOG.vertical);
-    }
     if (m.producerRel >= 65 && m.consumerSat >= 65) {
       return Object.assign({ type: "community" }, ENDING_CATALOG.community);
     }
     if (m.democracy >= 70 && m.trust >= 70) {
       return Object.assign({ type: "stable" }, ENDING_CATALOG.stable);
+    }
+    if (m.finance >= 75) {
+      return Object.assign({ type: "vertical" }, ENDING_CATALOG.vertical);
     }
     return Object.assign({ type: "muddling" }, ENDING_CATALOG.muddling);
   }
