@@ -315,7 +315,7 @@ body {
 }
 
 .btn--ghost {
-  background: transparent;
+  background: var(--color-surface);
 }
 
 .btn--icon {
