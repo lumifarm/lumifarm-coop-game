@@ -214,14 +214,20 @@
 
   function submitFeedback() {
     const favoriteEl = document.getElementById("feedback-favorite");
-    const suggestionEl = document.getElementById("feedback-suggestion");
+    const confusedDetailEl = document.getElementById("feedback-confused-detail");
+    const onechangeEl = document.getElementById("feedback-onechange");
     const nicknameEl = document.getElementById("feedback-nickname");
     const emailEl = document.getElementById("feedback-email");
     const statusEl = document.getElementById("feedback-status");
     const submitBtn = feedbackBody.querySelector('[data-action="feedback-submit"]');
     const ratingText = feedbackRating ? `${feedbackRating} 分` : "未評分";
     const favorite = (favoriteEl && favoriteEl.value.trim()) || "（未填寫）";
-    const suggestion = (suggestionEl && suggestionEl.value.trim()) || "（未填寫）";
+    const confusedChecked = Array.from(
+      feedbackBody.querySelectorAll("#feedback-confused-group input:checked")
+    ).map((el) => el.value);
+    const confused = confusedChecked.length ? confusedChecked.join("、") : "（未選擇）";
+    const confusedDetail = (confusedDetailEl && confusedDetailEl.value.trim()) || "（未填寫）";
+    const onechange = (onechangeEl && onechangeEl.value.trim()) || "（未填寫）";
     const nickname = (nicknameEl && nicknameEl.value.trim()) || "（未填寫）";
     const email = (emailEl && emailEl.value.trim()) || "（未填寫）";
 
@@ -234,7 +240,15 @@
     if (statusEl) statusEl.textContent = "傳送中...";
 
     emailjs
-      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { rating: ratingText, favorite, suggestion, nickname, email })
+      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+        rating: ratingText,
+        favorite,
+        confused,
+        confusedDetail,
+        onechange,
+        nickname,
+        email,
+      })
       .then(() => {
         feedbackBody.innerHTML = window.UI.feedbackSuccessHTML();
       })
@@ -309,6 +323,21 @@
   // 辛苦打的內容就整個不見，只能用右上角的 ✕ 或送出成功後的「關閉」按鈕離開。
   feedbackBtn.addEventListener("click", openFeedback);
   feedbackClose.addEventListener("click", closeFeedback);
+  feedbackBody.addEventListener("change", (e) => {
+    const checkbox = e.target.closest("#feedback-confused-group input[type='checkbox']");
+    if (!checkbox) return;
+    const isAllUnderstood = checkbox.value === "都看得懂";
+    const group = feedbackBody.querySelectorAll("#feedback-confused-group input[type='checkbox']");
+    if (checkbox.checked && isAllUnderstood) {
+      group.forEach((el) => {
+        if (el !== checkbox) el.checked = false;
+      });
+    } else if (checkbox.checked && !isAllUnderstood) {
+      group.forEach((el) => {
+        if (el.value === "都看得懂") el.checked = false;
+      });
+    }
+  });
   feedbackBody.addEventListener("click", (e) => {
     const rateBtn = e.target.closest('button[data-action="rate"]');
     if (rateBtn) {

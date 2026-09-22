@@ -175,10 +175,22 @@
       <button class="btn btn--primary" data-action="tutorial-start">${escapeHtml(tutorial.cta)}</button>`;
   }
 
+  const FEEDBACK_CONFUSED_OPTIONS = [
+    "數值/統計數字（例如消費者滿意度、出資額）",
+    "合作社的專有名詞",
+    "選項的後果/結局怎麼決定的",
+    "遊戲玩法/操作",
+    "都看得懂",
+  ];
+
   function feedbackFormHTML() {
     const ratingButtons = [1, 2, 3, 4, 5]
       .map((n) => `<button type="button" class="rating-btn" data-action="rate" data-value="${n}">${n}</button>`)
       .join("");
+    const confusedCheckboxes = FEEDBACK_CONFUSED_OPTIONS.map(
+      (label) =>
+        `<label class="feedback-checkbox"><input type="checkbox" value="${escapeHtml(label)}" />${escapeHtml(label)}</label>`
+    ).join("");
     return `
       <p class="feedback-intro">這個遊戲有沒有讓你更了解合作社？你的想法能幫助我們把它做得更有趣、更貼近實際經營合作社的樣子。</p>
       <div class="feedback-field">
@@ -190,8 +202,16 @@
         <textarea id="feedback-favorite" rows="2" placeholder="（選填）"></textarea>
       </div>
       <div class="feedback-field">
-        <label class="feedback-label" for="feedback-suggestion">有沒有覺得卡關、不合理，或希望改進的地方？</label>
-        <textarea id="feedback-suggestion" rows="3" placeholder="（選填）"></textarea>
+        <div class="feedback-label">遊戲中有沒有哪個地方看不懂？（可複選）</div>
+        <div class="feedback-checkbox-group" id="feedback-confused-group">${confusedCheckboxes}</div>
+      </div>
+      <div class="feedback-field">
+        <label class="feedback-label" for="feedback-confused-detail">能具體說是哪一項嗎？</label>
+        <textarea id="feedback-confused-detail" rows="2" placeholder="（選填）"></textarea>
+      </div>
+      <div class="feedback-field">
+        <label class="feedback-label" for="feedback-onechange">如果只能改一件事，你會改哪裡？</label>
+        <textarea id="feedback-onechange" rows="2" placeholder="（選填）"></textarea>
       </div>
       <div class="feedback-field">
         <label class="feedback-label" for="feedback-nickname">暱稱</label>
