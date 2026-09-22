@@ -193,6 +193,14 @@
         <label class="feedback-label" for="feedback-suggestion">有沒有覺得卡關、不合理，或希望改進的地方？</label>
         <textarea id="feedback-suggestion" rows="3" placeholder="（選填）"></textarea>
       </div>
+      <div class="feedback-field">
+        <label class="feedback-label" for="feedback-nickname">暱稱</label>
+        <input type="text" id="feedback-nickname" placeholder="（選填）" />
+      </div>
+      <div class="feedback-field">
+        <label class="feedback-label" for="feedback-email">如果您想收到回覆說明，請留 Email</label>
+        <input type="email" id="feedback-email" placeholder="（選填）" />
+      </div>
       <div class="feedback-actions">
         <button class="btn btn--primary" data-action="feedback-submit">送出回饋</button>
       </div>

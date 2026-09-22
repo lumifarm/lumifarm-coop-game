@@ -215,11 +215,15 @@
   function submitFeedback() {
     const favoriteEl = document.getElementById("feedback-favorite");
     const suggestionEl = document.getElementById("feedback-suggestion");
+    const nicknameEl = document.getElementById("feedback-nickname");
+    const emailEl = document.getElementById("feedback-email");
     const statusEl = document.getElementById("feedback-status");
     const submitBtn = feedbackBody.querySelector('[data-action="feedback-submit"]');
     const ratingText = feedbackRating ? `${feedbackRating} 分` : "未評分";
     const favorite = (favoriteEl && favoriteEl.value.trim()) || "（未填寫）";
     const suggestion = (suggestionEl && suggestionEl.value.trim()) || "（未填寫）";
+    const nickname = (nicknameEl && nicknameEl.value.trim()) || "（未填寫）";
+    const email = (emailEl && emailEl.value.trim()) || "（未填寫）";
 
     if (typeof emailjs === "undefined") {
       if (statusEl) statusEl.textContent = "送出功能暫時無法使用，請稍後再試一次。";
@@ -230,7 +234,7 @@
     if (statusEl) statusEl.textContent = "傳送中...";
 
     emailjs
-      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { rating: ratingText, favorite, suggestion })
+      .send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { rating: ratingText, favorite, suggestion, nickname, email })
       .then(() => {
         feedbackBody.innerHTML = window.UI.feedbackSuccessHTML();
       })
