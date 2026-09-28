@@ -353,6 +353,14 @@ body {
   letter-spacing: 1px;
 }
 
+.scene-tag-avatar {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .feedback-text {
   font-size: 1.02rem;
 }

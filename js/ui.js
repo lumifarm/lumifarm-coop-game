@@ -91,7 +91,7 @@
   function sceneTagHTML(speaker) {
     const meta = SPEAKER_META[speaker];
     if (!meta) return "";
-    return `<div class="scene-tag"><span class="scene-tag-icon">🧑${meta.icon}</span><span>${escapeHtml(
+    return `<div class="scene-tag"><img class="scene-tag-avatar" src="public/avatar-xiaoguang.png" alt="小光" /><span class="scene-tag-icon">${meta.icon}</span><span>${escapeHtml(
       meta.label
     )}</span></div>`;
   }
