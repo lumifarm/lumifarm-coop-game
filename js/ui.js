@@ -88,6 +88,15 @@
     self: { icon: "💭", label: "小光的內心抉擇" },
   };
 
+  // 每種對話類型的通用場景插圖，事件若沒有自己的 sceneImage 就會用這張。
+  const SPEAKER_SCENE_IMAGE = {
+    producer: "public/scenes/producer.webp",
+    consumer: "public/scenes/consumer.webp",
+    internal: "public/scenes/internal.webp",
+    both: "public/scenes/both.webp",
+    self: "public/scenes/self.webp",
+  };
+
   function sceneTagHTML(speaker) {
     const meta = SPEAKER_META[speaker];
     if (!meta) return "";
@@ -96,17 +105,18 @@
     )}</span></div>`;
   }
 
-  // 場景插圖是選配欄位（event.sceneImage，一張圖片路徑）：美術資源到位前，
-  // 沒有這個欄位就不會顯示，也不影響其他畫面；圖片載入失敗時直接移除，避免出現破圖示。
-  function sceneImageHTML(sceneImage) {
-    if (!sceneImage) return "";
-    return `<img class="scene-image" src="${escapeHtml(sceneImage)}" alt="" onerror="this.remove()" />`;
+  // 場景插圖：優先用事件自己的 sceneImage（未來可以補特定事件的專屬插圖），
+  // 沒有的話退回該對話類型的通用場景圖。圖片載入失敗時直接移除，避免出現破圖示。
+  function sceneImageHTML(item) {
+    const src = item.sceneImage || SPEAKER_SCENE_IMAGE[item.speaker];
+    if (!src) return "";
+    return `<img class="scene-image" src="${escapeHtml(src)}" alt="" onerror="this.remove()" />`;
   }
 
   function eventHTML(event) {
     return `
       <section class="card card--event">
-        ${sceneImageHTML(event.sceneImage)}
+        ${sceneImageHTML(event)}
         ${sceneTagHTML(event.speaker)}
         <h3>${escapeHtml(event.title)}</h3>
         <p class="situation">${escapeHtml(event.situation)}</p>
@@ -117,7 +127,7 @@
   function quizHTML(quiz) {
     return `
       <section class="card card--quiz">
-        ${sceneImageHTML(quiz.sceneImage)}
+        ${sceneImageHTML(quiz)}
         <div class="quiz-tag">民主健檢</div>
         ${sceneTagHTML(quiz.speaker)}
         <h3>${escapeHtml(quiz.title)}</h3>
