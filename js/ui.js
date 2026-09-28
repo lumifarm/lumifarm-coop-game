@@ -80,9 +80,26 @@
       .join("");
   }
 
+  const SPEAKER_META = {
+    producer: { icon: "👨‍🌾", label: "小光 × 生產者" },
+    consumer: { icon: "🛒", label: "小光 × 消費者" },
+    internal: { icon: "🧑‍🤝‍🧑", label: "小光 × 社員／理監事" },
+    both: { icon: "👨‍🌾🛒", label: "小光 × 生產者與消費者" },
+    self: { icon: "💭", label: "小光的內心抉擇" },
+  };
+
+  function sceneTagHTML(speaker) {
+    const meta = SPEAKER_META[speaker];
+    if (!meta) return "";
+    return `<div class="scene-tag"><span class="scene-tag-icon">🧑${meta.icon}</span><span>${escapeHtml(
+      meta.label
+    )}</span></div>`;
+  }
+
   function eventHTML(event) {
     return `
       <section class="card card--event">
+        ${sceneTagHTML(event.speaker)}
         <h3>${escapeHtml(event.title)}</h3>
         <p class="situation">${escapeHtml(event.situation)}</p>
         <div class="options">${optionsHTML(event.options)}</div>
@@ -93,6 +110,7 @@
     return `
       <section class="card card--quiz">
         <div class="quiz-tag">民主健檢</div>
+        ${sceneTagHTML(quiz.speaker)}
         <h3>${escapeHtml(quiz.title)}</h3>
         <p class="situation">${escapeHtml(quiz.situation)}</p>
         <div class="options">${optionsHTML(quiz.options)}</div>

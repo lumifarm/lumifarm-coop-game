@@ -334,6 +334,25 @@ body {
   margin-bottom: 10px;
 }
 
+.scene-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eaf3ec;
+  border: 1px solid var(--color-border);
+  color: var(--color-ink-soft);
+  font-size: 0.78rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+  margin-right: 6px;
+}
+
+.scene-tag-icon {
+  font-size: 1rem;
+  letter-spacing: 1px;
+}
+
 .feedback-text {
   font-size: 1.02rem;
 }
