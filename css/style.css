@@ -717,7 +717,87 @@ body {
   margin: 0 0 8px;
 }
 
+/* ---------- 路線一／路線二入口 ---------- */
+
+.btn--route2 {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+.route-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.route-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+.route-tile--current {
+  border-color: var(--color-primary);
+  background: #eaf3ec;
+}
+
+.route-tile--link {
+  border: 2px dashed var(--color-accent);
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.route-tile--link:hover {
+  background: #f6efe0;
+  transform: translateY(-1px);
+}
+
+.route-tile-badge {
+  align-self: flex-start;
+  font-size: 0.7rem;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.route-tile--link .route-tile-badge {
+  background: var(--color-accent);
+}
+
+.route-tile-desc {
+  font-size: 0.8rem;
+  color: var(--color-ink-soft);
+  line-height: 1.5;
+}
+
+.ending-route2 {
+  display: block;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 2px dashed var(--color-accent);
+  color: var(--color-accent);
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+}
+
+.ending-route2:hover {
+  background: #f6efe0;
+}
+
 @media (max-width: 480px) {
+  .route-switch {
+    grid-template-columns: 1fr;
+  }
   .app {
     padding: 12px 12px 40px;
   }

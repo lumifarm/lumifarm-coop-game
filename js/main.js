@@ -62,7 +62,9 @@
     const act = window.GameEngine.currentAct(state);
 
     if (state.phase === "intro") {
-      stage.innerHTML = window.UI.introHTML(act);
+      // 只有開局第一個畫面顯示路線選擇，進入遊戲後就不再打擾
+      const routeSwitch = state.actIndex === 0 ? window.UI.routeSwitchHTML() : "";
+      stage.innerHTML = routeSwitch + window.UI.introHTML(act);
     } else if (state.phase === "event") {
       const event = window.GameEngine.currentEvent(state);
       stage.innerHTML = window.UI.eventHTML(event);

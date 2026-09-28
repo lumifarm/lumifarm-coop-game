@@ -4,6 +4,8 @@
 
 內容改編自兩份文獻：簡報《從產地到餐桌：如何經濟民主》與論文《合作的艱難：勞動合作社的比較利益－以勞動者觀點出發》（皆為洪敬舒），所有情境與案例皆為改寫詮釋，非逐字引用。詳見 [docs/GAME_DESIGN.md](docs/GAME_DESIGN.md)。
 
+這是「路線一」。**路線二「轉型之路」**是另一個獨立的 repo（[lumifarm/lumifarm-transition-game](https://github.com/lumifarm/lumifarm-transition-game)），網址 https://lumifarm.github.io/lumifarm-transition-game/ 。本遊戲的頂部按鈕、開局第一個畫面的路線選擇，以及結局畫面都有連到路線二；網址寫在 `index.html` 與 `js/ui.js` 的 `ROUTE2_URL`。
+
 ## 怎麼玩
 
 不需要安裝任何工具，是純前端的靜態網頁：

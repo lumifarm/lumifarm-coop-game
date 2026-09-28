@@ -48,6 +48,26 @@
       .join('<span class="progress-sep">→</span>')}</div>`;
   }
 
+  // 路線二「轉型之路」是獨立的 repo（lumifarm/lumifarm-transition-game），index.html 頂部按鈕也連到同一個網址
+  const ROUTE2_URL = "https://lumifarm.github.io/lumifarm-transition-game/";
+
+  // 開局第一個畫面上方的路線選擇：路線一（目前這個遊戲）與路線二並列
+  function routeSwitchHTML() {
+    return `
+      <nav class="route-switch" aria-label="選擇遊戲路線">
+        <div class="route-tile route-tile--current">
+          <span class="route-tile-badge">路線一・你在這裡</span>
+          <strong>🌾 從產地到餐桌</strong>
+          <span class="route-tile-desc">扮演合作社發起人，走過結識夥伴到共同信貸的四個階段。</span>
+        </div>
+        <a class="route-tile route-tile--link" href="${ROUTE2_URL}">
+          <span class="route-tile-badge">路線二・新推出</span>
+          <strong>🤝 轉型之路 →</strong>
+          <span class="route-tile-desc">說服農友、據點、學校與公部門，用轉型帳本看看談成了是不是就公平。</span>
+        </a>
+      </nav>`;
+  }
+
   function introHTML(act) {
     return `
       <section class="card card--intro">
@@ -179,6 +199,7 @@
           <button class="btn btn--ghost" data-action="open-achievements">🏆 查看所有結局</button>
           <button class="btn btn--ghost" data-action="open-feedback">💬 留下你的回饋</button>
         </div>
+        <a class="ending-route2" href="${ROUTE2_URL}">🤝 也試試路線二「轉型之路」：談成了，就公平了嗎？ →</a>
       </section>`;
   }
 
@@ -295,6 +316,7 @@
     metricsBarHTML,
     progressHTML,
     introHTML,
+    routeSwitchHTML,
     outroHTML,
     eventHTML,
     quizHTML,
