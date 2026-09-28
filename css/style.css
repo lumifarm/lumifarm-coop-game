@@ -334,6 +334,15 @@ body {
   margin-bottom: 10px;
 }
 
+.scene-image {
+  display: block;
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: var(--radius);
+  margin-bottom: 14px;
+}
+
 .scene-tag {
   display: inline-flex;
   align-items: center;
@@ -353,13 +362,6 @@ body {
   letter-spacing: 1px;
 }
 
-.scene-tag-avatar {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  object-fit: cover;
-  flex-shrink: 0;
-}
 
 .feedback-text {
   font-size: 1.02rem;

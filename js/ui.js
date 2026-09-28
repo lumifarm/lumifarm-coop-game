@@ -91,14 +91,22 @@
   function sceneTagHTML(speaker) {
     const meta = SPEAKER_META[speaker];
     if (!meta) return "";
-    return `<div class="scene-tag"><img class="scene-tag-avatar" src="public/avatar-xiaoguang.png" alt="小光" /><span class="scene-tag-icon">${meta.icon}</span><span>${escapeHtml(
+    return `<div class="scene-tag"><span class="scene-tag-icon">${meta.icon}</span><span>${escapeHtml(
       meta.label
     )}</span></div>`;
+  }
+
+  // 場景插圖是選配欄位（event.sceneImage，一張圖片路徑）：美術資源到位前，
+  // 沒有這個欄位就不會顯示，也不影響其他畫面；圖片載入失敗時直接移除，避免出現破圖示。
+  function sceneImageHTML(sceneImage) {
+    if (!sceneImage) return "";
+    return `<img class="scene-image" src="${escapeHtml(sceneImage)}" alt="" onerror="this.remove()" />`;
   }
 
   function eventHTML(event) {
     return `
       <section class="card card--event">
+        ${sceneImageHTML(event.sceneImage)}
         ${sceneTagHTML(event.speaker)}
         <h3>${escapeHtml(event.title)}</h3>
         <p class="situation">${escapeHtml(event.situation)}</p>
@@ -109,6 +117,7 @@
   function quizHTML(quiz) {
     return `
       <section class="card card--quiz">
+        ${sceneImageHTML(quiz.sceneImage)}
         <div class="quiz-tag">民主健檢</div>
         ${sceneTagHTML(quiz.speaker)}
         <h3>${escapeHtml(quiz.title)}</h3>
